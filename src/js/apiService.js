@@ -1,12 +1,32 @@
-const API_URL = 'https://pixabay.com/api';
-const API_KEY = '20710280-32e8ecf65799bd35d240b13ea';
+const API_KEY = '20669309-c97d1ec468a66ad87fd39e114';
+const BASE_URL = 'https://pixabay.com/api';
 
-async function fetchImages(imgId) {
-  return fetch(`${API_URL}/?key=${API_KEY}/${imgId}`).then(res => {
-    if (!res.ok) {
-      return Promise.reject('No image found');
-    }
-    return res.json();
-  });
+export default class ImgApiService {
+  constructor() {
+    this.query = '';
+    this.page = 1;
+  }
+
+  fetchArticles() {
+    const url = `${BASE_URL}/?key=${API_KEY}&image_type=photo&orientation=horizontal&q=${this.query}&page=${this.page}&per_page=12`;
+
+    return fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        this.page += 1;
+        return data;
+      });
+  }
+
+  resetPage() {
+    this.page = 1;
+  }
+
+  get query() {
+    return this.query;
+  }
+
+  set query(newquery) {
+    this.query = newquery;
+  }
 }
-export default fetchImages;
