@@ -103,3 +103,25 @@ ol {
 input[type='search'] {
   -webkit-appearance: none;
 }
+
+.btn {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: inherit;
+  font-size: inherit;
+  height: 50px;
+  min-width: 100px;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #b077ba;
+  border-radius: 5px;
+}
+.is-hidden {
+  display: none;
+}
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+}
