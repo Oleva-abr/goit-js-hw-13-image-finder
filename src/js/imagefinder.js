@@ -70,5 +70,3 @@ function onLoadMore() {
 function showButton() {
   loadBtn.classList.remove('is-hidden');
 }
-
-// ===========================Big Image================================
