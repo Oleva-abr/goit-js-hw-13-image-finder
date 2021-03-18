@@ -1,4 +1,4 @@
-import ImgApiService from './apiService';
+import ImgApiService from './apiService.js';
 import imageTpl from '../templates/imgCards.hbs';
 
 import { error } from '@pnotify/core/dist/PNotify.js';
@@ -7,21 +7,19 @@ import '@pnotify/core/dist/BrightTheme.css';
 
 const imgApiService = new ImgApiService();
 
-const form = document.querySelector('.input');
+// const form = document.querySelector('.input');
 const gallery = document.querySelector('.gallery');
-// const submit = document.querySelector('.submit');
+const submit = document.querySelector('.submit');
 const loadBtn = document.querySelector('[data-action="load-more"]');
 
-form.addEventListener('submit', onSearch);
-loadBtn.addEventListener('click', onLoadMore);
+submit.addEventListener('submit', onSearch);
 
-function onSearch(event) {
-  event.preventDefault();
-  const searchQuery = event.currentTarget;
-  imgApiService.query = searchQuery.query.value;
-  //   if (!imgApiService.query) {
-  //     return;
-  //   }
+function onSearch(e) {
+  e.preventDefault();
+
+  imgApiService.query = e.currentTarget.elements.query.value;
+  console.log(imgApiService.query);
+
   if (imgApiService.query === '') {
     error({
       text: 'Please enter something!',
@@ -40,7 +38,6 @@ function onSearch(event) {
   imgApiService.fetchArticles().then(data => {
     clearGallery();
     createGalleryMarkup(data);
-    console.log(data);
   });
 }
 
@@ -50,4 +47,12 @@ function clearGallery() {
 
 function createGalleryMarkup(data) {
   gallery.insertAdjacentHTML('beforeend', imageTpl(data));
+}
+
+// ===========================Load next pages====================================
+
+loadBtn.addEventListener('click', onLoadMore);
+
+function onLoadMore() {
+  imgApiService.fetchArticles(createGalleryMarkup);
 }
