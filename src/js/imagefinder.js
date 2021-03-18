@@ -29,7 +29,7 @@ function onSearch(e) {
     return;
   }
 
-  if (imgApiService.query.length === 0) {
+  if (imgApiService.query.trim().length === 0) {
     error({
       text: 'Please enter a more specific query!',
     });
@@ -41,6 +41,8 @@ function onSearch(e) {
     clearGallery();
     createGalleryMarkup(data);
   });
+
+  showButton();
 }
 
 function clearGallery() {
@@ -51,10 +53,22 @@ function createGalleryMarkup(data) {
   gallery.insertAdjacentHTML('beforeend', imageTpl(data));
 }
 
-// ===========================Load next pages====================================
+// ======================Load Button=====================================
 
 loadBtn.addEventListener('click', onLoadMore);
 
 function onLoadMore() {
-  imgApiService.fetchArticles(createGalleryMarkup);
+  imgApiService.fetchArticles().then(data => {
+    createGalleryMarkup(data);
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: 'smooth',
+    });
+  });
 }
+
+function showButton() {
+  loadBtn.classList.remove('is-hidden');
+}
+
+// ===========================Big Image================================
