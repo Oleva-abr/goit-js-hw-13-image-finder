@@ -7,19 +7,21 @@ import '@pnotify/core/dist/BrightTheme.css';
 
 const imgApiService = new ImgApiService();
 
-// const form = document.querySelector('.input');
+const form = document.querySelector('.search');
 const gallery = document.querySelector('.gallery');
-const submit = document.querySelector('.submit');
+
 const loadBtn = document.querySelector('[data-action="load-more"]');
 
-submit.addEventListener('submit', onSearch);
+form.addEventListener('submit', onSearch);
 
 function onSearch(e) {
   e.preventDefault();
 
   imgApiService.query = e.currentTarget.elements.query.value;
   console.log(imgApiService.query);
-
+  if (!imgApiService.query) {
+    return;
+  }
   if (imgApiService.query === '') {
     error({
       text: 'Please enter something!',
