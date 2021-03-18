@@ -5,6 +5,9 @@ import { error } from '@pnotify/core/dist/PNotify.js';
 import '@pnotify/core/dist/PNotify.css';
 import '@pnotify/core/dist/BrightTheme.css';
 
+import * as basicLightbox from 'basiclightbox';
+import 'basicLightbox/dist/basicLightbox.min.css';
+
 const imgApiService = new ImgApiService();
 
 const form = document.querySelector('.search');
@@ -19,9 +22,7 @@ function onSearch(e) {
 
   imgApiService.query = e.currentTarget.elements.query.value;
   console.log(imgApiService.query);
-  if (!imgApiService.query) {
-    return;
-  }
+
   if (imgApiService.query === '') {
     error({
       text: 'Please enter something!',
@@ -69,4 +70,20 @@ function onLoadMore() {
 
 function showButton() {
   loadBtn.classList.remove('is-hidden');
+}
+
+// ======================modal image=====================================
+
+gallery.addEventListener('click', onClickGallery);
+function onClickGallery(event) {
+  event.preventDefault();
+  if (event.target.nodeName !== 'IMG') {
+    return;
+  }
+  console.log(event.target.dataset);
+
+  const instance = basicLightbox.create(`
+    <img src="${event.target.dataset.source}" width="800" height="600"> `);
+
+  instance.show();
 }
